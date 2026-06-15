@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Lander - Event Planning</title>
+   <link rel="stylesheet" href="css/style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#home" onclick="closeNav()">Home</a>
+        <a href="/login" onclick="closeNav()">Login</a>
+        <a href="/signup" onclick="closeNav()">Sign Up</a>
+        <hr class="sidebar-divider">
+        <a href="#booking" onclick="closeNav()">Booking</a>
+        <a href="#payment" onclick="closeNav()">Payment Retainer</a>
+        <a href="#services" onclick="closeNav()">Services & Budget</a>
+        <a href="#gallery" onclick="closeNav()">Gallery</a>
+        <a href="#reviews" onclick="closeNav()">Reviews</a>
+    </div>
+
+    <header class="site-header">
+        <nav class="top-nav">
+            <button class="openbtn" onclick="openNav()">&#9776; Menu</button>
+
+            <a href="#" class="brand">
+                <div>
+                    <div class="brand-name">Dream Lander</div>
+                    <div class="brand-tag">Event Planning</div>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#booking">Booking</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+            </ul> 
+            
+            <a href="#booking" class="cta-button">Book Us</a> 
+            
+            <div class="auth-buttons" id="navAuthSection">
+                <a href="/login" class="btn-login" style="text-decoration:none; text-align:center; display:inline-block; padding: 8px 16px;">Login</a>
+                <a href="/signup" class="btn-signup" style="text-decoration:none; text-align:center; display:inline-block; padding: 8px 16px;">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="first">
+        <section id="home" class="video-section hero">
+            <video autoplay muted loop class="section-video">
+                <source src="assets/Video-987.mp4" type="video/mp4">
+            </video>
+
+            <div class="video-content">
+                <h1>Welcome!<br>May your Celebrations be<br>Unforgettable</h1>
+                <p>We are Inspired by Your Happiness. We don’t just plan Events—We craft seamless, soulful experiences.</p>
+                <button id="getStartedButton" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">Get started</button>
+            </div>
+        </section>
+    </div>
+
+    <section id="booking" class="booking-section section-wrapper">
+        <div class="booking-card">
+            <h2>Book Your Event</h2>
+            <p>Send your request now and our event planning team will contact you with a custom proposal.</p>
+            <form id="bookingForm">
+                <div class="form-grid">
+                    <input type="text" name="name" placeholder="Full name" required>
+                    <input type="email" name="email" placeholder="Email address" required>
+                    <input type="text" name="eventType" placeholder="Event type (Wedding, Party...)" required>
+                    <input type="date" name="eventDate" required>
+                    <input type="number" name="guests" placeholder="Number of guests">
+                    <textarea name="message" placeholder="Tell us about your event"></textarea>
+                </div>
+                <br>
+                <button id="submitBooking" type="submit">Submit Booking</button>
+                <p class="form-success" id="formMessage" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <section id="payment" class="payment-section section-wrapper">
+        <div class="booking-card" style="text-align: center;">
+            <h2>Secure Your Event Date</h2>
+            <p>Ready to lock in your date with Dream Lander? Pay your custom retainer deposit safely using Stripe secure checkout.</p>
+            <div class="payment-box" style="margin: 30px auto; padding: 25px; border: 1px dashed #ccc; max-width: 400px; border-radius: 8px;">
+                <h3>Booking Deposit Retainer</h3>
+                <h2 style="color: #2ecc71; margin: 15px 0;">₹10,000</h2>
+                <a href="/checkout" id="checkout-button" class="cta-button" style="display:block; margin-top:18px; text-align:center; text-decoration: none; background: #635bff; color: white; padding: 12px; border-radius: 4px;">Pay Securely with Stripe</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="second" id="services">
+        <h2>CALCULATE YOUR BUDGET</h2>
+        <div class="calculator">
+            <input type="text" placeholder="Event Type">
+            <input type="text" placeholder="Number of Guests">
+            <input type="text" placeholder="Budget Range">
+            <button>Calculate</button>
+        </div>
+        
+        <div class="button">
+            <h3>VENUE</h3>
+            <p>Explore a wide range of stunning venues available with us! From elegant villas, grand banquet halls to charming marriage halls, luxurious hotels, and serene resorts—we bring you the best options in your city or anywhere across India.</p>
+            <br>
+            <button>Book Us for Venue</button>
+            <br><br>
+            <div class="flexbox">
+                <div class="card"><img src="assets/venue1.jpg" alt="Venue 1"></div>
+                <div class="card"><img src="assets/venue2.jpg" alt="Venue 2"></div>
+                <div class="card"><img src="assets/venue3.jpg" alt="Venue 3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="third" id="gallery">
+        <div class="button">
+            <h3>DECORATIONS</h3>
+            <p>From enchanting floral arrangements to stunning theme decoration, we bring your dream wedding vision to life.</p>
+            <br>
+            <button>Book us for Decor Management</button>
+            <div class="flexbox">
+                <div class="card"><img src="assets/decor1.jpg" alt="Decor 1"></div>
+                <div class="card"><img src="assets/decor2.jpg" alt="Decor 2"></div>
+                <div class="card"><img src="assets/decor3.jpg" alt="Decor 3"></div>
+            </div>
+        </div>
+        
+        <div class="button">
+            <h3>FOOD AND BEVERAGES</h3>
+            <p>We partner with the most renowned caterers who deliver exceptional service and quality food, ensuring that the guests enjoy a delicious and scrumptious meal at your wedding.</p>
+            <br>
+            <button>Book Us for Food Caterings</button>
+            <div class="flexbox">
+                <div class="card"><img src="assets/food1.jpg" alt="Food 1"></div>
+                <div class="card"><img src="assets/food2.jpg" alt="Food 2"></div>
+                <div class="card"><img src="assets/food3.jpg" alt="Food 3"></div>
+            </div>
+        </div>
+
+        <div class="button">
+            <h3>PHOTOGRAPHY</h3>
+            <p>We have a panel of renowned photographers and cinematographers, offering exceptional quality at affordable rates.</p>
+            <br>
+            <button>Book Us for Photography</button>
+            <div class="flexbox">
+                <div class="card"><img src="assets/photo1.jpg" alt="Photography 1"></div>
+                <div class="card"><img src="assets/photo2.webp" alt="Photography 2"></div>
+                <div class="card"><img src="assets/venue3.jpg" alt="Photography 3"></div>
+            </div>
+        </div>
+    </div>
+
+<section id="reviews" class="fourth">
+    <h2>WHAT OUR CLIENTS SAY</h2>
+    
+    <div class="reviews" id="reviewsContainer">
+        <p style="text-align: center; color: #666; width: 100%;">Loading client stories...</p>
+    </div>
+
+    <div class="booking-card" style="max-width: 500px; margin: 40px auto; text-align: left;">
+        <h3>Share Your Dream Experience</h3>
+        <p>Loved your event setup? Leave us a live review with smile:)!</p>
+        
+        <form id="reviewForm">
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-weight:bold;">Your Name</label>
+                <input type="text" id="reviewName" placeholder="Enter your full name" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-weight:bold;">Profile Picture (Optional)</label>
+                <input type="file" id="reviewAvatar" accept="image/*" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box; background: white;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-weight:bold;">Your Feedback</label>
+                <textarea id="reviewMessage" placeholder="Thank you for making our event magical..." required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box; height:100px; resize:vertical;"></textarea>
+            </div>
+            
+            <button type="submit" style="background-color: #ff4757; color: white; border: none; padding: 12px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%;">Publish Review Instantly</button>
+        </form>
+    </div>
+</section>
+
+<div class="footer">
+            <p>Follow us on social media</p>
+            <div class="socials">
+                <img src="assets/instagram-logo.png" alt="Instagram">
+                <img src="assets/facebook-logo.png" alt="Facebook">
+            </div>
+            <br>
+            <p>Privacy Policy | Terms and Conditions</p>
+            <p>&copy; 2026 Dream Lander. All rights reserved.</p>
+        </div>
+    </section>
+
+    <a href="https://wa.me/911234567890" target="_blank" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); text-decoration: none; font-size: 30px; color: white;">
+        &#128172;
+    </a> 
+
+<script src="js/main.js"></script>
+</body>
+</html>
