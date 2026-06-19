@@ -6,7 +6,7 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
-const multer = require('multer'); // ✅ Moved to the top imports
+const multer = require('multer');
 
 const app = express();
 const PORT = 5000;
@@ -21,7 +21,6 @@ const io = new Server(server, {
 });
 
 // --- Multer Storage Configuration ---
-// ✅ Configured up top so your routes can use the 'upload' variable safely below
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, 'assets')); 
@@ -36,10 +35,11 @@ const upload = multer({ storage: storage });
 app.use(express.json());
 app.use(cors());
 
-// Serve static layout files (HTML, CSS, JS) from the public folder
+// Serve static layout files from root, and explicitly expose the upload folder
 app.use(express.static(__dirname));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// --- Database Connection (Unified Atlas Cloud Pipeline) ---
+// --- Database Connection ---
 mongoose.connect('mongodb+srv://sanjanaverma200320_db_user:3XHozPoT8VYbgTH7@cluster0.wekcyix.mongodb.net/dreamlander?appName=Cluster0')
   .then(() => console.log('Connected Securely to MongoDB Atlas Cloud System.'))
   .catch(err => console.error('Database Connectivity Failure Context:', err));
@@ -211,36 +211,30 @@ app.post('/api/reviews', upload.single('avatar'), async (req, res) => {
     }
 });
 
+// 8. Route to delete a specific review by its unique ID (Moved safely above server.listen)
+app.delete('/api/reviews/:id', async (req, res) => {
+    try {
+        const reviewId = req.params.id;
+        
+        const deletedReview = await Review.findByIdAndDelete(reviewId);
+        if (!deletedReview) {
+            return res.status(404).json({ message: "Review not found." });
+        }
+
+        io.emit('review_deleted', reviewId);
+        res.status(200).json({ success: true, message: "Review removed successfully." });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error while deleting review." });
+    }
+});
+
 // --- Socket.io Live Monitoring Channel Hooks ---
 io.on('connection', (socket) => {
     console.log('Admin dashboard live monitoring tab hooked in.');
 });
 
 // --- Boot Application Server Pipeline ---
-// ✅ This must stay at the very bottom right before the end of the file
 server.listen(PORT, () => {
     console.log(`Dream Lander unified ecosystem executing live on http://localhost:${PORT}`);
-});
-
-
-// 8. Route to delete a specific review by its unique ID
-app.delete('/api/reviews/:id', async (req, res) => {
-    try {
-        const reviewId = req.params.id;
-        
-        // Find and delete the document in MongoDB
-        const deletedReview = await Review.findByIdAndDelete(reviewId);
-        
-        if (!deletedReview) {
-            return res.status(404).json({ message: "Review not found." });
-        }
-
-        // Notify all open client windows via WebSockets to instantly strip it from the UI
-        io.emit('review_deleted', reviewId);
-
-        res.status(200).json({ success: true, message: "Review removed successfully." });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Server error while deleting review." });
-    }
 });
