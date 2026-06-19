@@ -116,7 +116,7 @@ const reviewsContainer = document.getElementById('reviewsContainer');
 const reviewForm = document.getElementById('reviewForm');
 
 // 1. Establish real-time live synchronization link with your active port server
-const socket = io();
+const socket = io({ transports: ['polling'] });
 
 // Helper function to dynamically generate a clean review card block element with cross action deletion toggle
 function renderReviewCard(review) {
