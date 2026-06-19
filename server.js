@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(cors());
 
 // Serve static layout files (HTML, CSS, JS) from the public folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // --- Database Connection (Unified Atlas Cloud Pipeline) ---
 mongoose.connect('mongodb+srv://sanjanaverma200320_db_user:3XHozPoT8VYbgTH7@cluster0.wekcyix.mongodb.net/dreamlander?appName=Cluster0')
