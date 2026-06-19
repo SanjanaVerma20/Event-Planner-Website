@@ -1,5 +1,5 @@
 // BACKEND API BASE CONFIG
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
 // SIDEBAR ACTIONS
 function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
