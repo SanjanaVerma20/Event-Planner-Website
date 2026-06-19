@@ -116,15 +116,18 @@ const reviewsContainer = document.getElementById('reviewsContainer');
 const reviewForm = document.getElementById('reviewForm');
 
 // 1. Establish real-time live synchronization link with your active port server
-const socket = io({ transports: ['polling'] });
+// ✅ FIX: Dynamically connect Socket.io directly to your backend port (5000) instead of the frontend live server port
+const socket = io('http://localhost:5000', { transports: ['polling'] });
 
 // Helper function to dynamically generate a clean review card block element with cross action deletion toggle
 function renderReviewCard(review) {
+    // ✅ FIX: Ensure image paths point directly to your backend server port so they render correctly
+    const imageSrc = review.avatar.startsWith('http') ? review.avatar : `http://localhost:5000/${review.avatar}`;
     return `
         <div class="card review" id="review-${review._id}" style="position: relative;">
             <button onclick="deleteReview('${review._id}')" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff4757; font-size: 16px; cursor: pointer; font-weight: bold;">✕</button>
             
-            <img src="${review.avatar}" alt="${review.name}">
+            <img src="${imageSrc}" alt="${review.name}">
             <h3>${review.name}</h3>
             <p>"${review.message}"</p>
         </div>
