@@ -24,7 +24,7 @@ const io = new Server(server, {
 // ✅ Configured up top so your routes can use the 'upload' variable safely below
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'public', 'assets')); 
+        cb(null, path.join(__dirname, 'assets')); 
     },
     filename: (req, file, cb) => {
         cb(null, 'avatar-' + Date.now() + path.extname(file.originalname));
