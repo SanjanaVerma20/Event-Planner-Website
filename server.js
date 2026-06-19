@@ -40,7 +40,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Database Connection (Unified Atlas Cloud Pipeline) ---
-mongoose.connect('mongodb+srv://sanjanaverma200320_db_user:3XHozPoT8VYbgTH7@cluster0.wekcyix.mongodb.net/dreamlander?appName=Cluster0')
+mongoose.connect('mongodb+srv://sanjanaverma200320_db_user:<db_password>@cluster0.wekcyix.mongodb.net/?appName=Cluster0')
   .then(() => console.log('Connected Securely to MongoDB Atlas Cloud System.'))
   .catch(err => console.error('Database Connectivity Failure Context:', err));
 
