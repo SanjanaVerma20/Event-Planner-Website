@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Lander - Sign Up</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .auth-container { background: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+        h2 { margin-top: 0; color: #333; text-align: center; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; color: #666; font-weight: bold; font-size: 14px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; margin-bottom: 20px; }
+        .password-wrapper { position: relative; }
+         .password-toggle { position: absolute; right: 12px; top: 20px; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px; }
+        button[type="submit"] { background-color: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        button[type="submit"]:hover { background-color: #218838; }
+        .toggle-text { text-align: center; margin-top: 20px; color: #555; }
+        .toggle-text a { color: #635bff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Create Your Account</h2>
+    <form id="signupForm">
+        <label for="signupName">Full Name</label>
+        <input type="text" id="signupName" placeholder="Enter your name" required>
+
+        <label for="signupEmail">Email Address</label>
+        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+        
+        <label for="signupPassword">Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="signupPassword" placeholder="Choose a strong password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+        </div>
+        
+        <button type="submit">Register</button>
+    </form>
+    <p class="toggle-text">Already have an account? <a href="/login">Login Here</a></p>
+    <p class="toggle-text"><a href="/" style="color: #666; font-weight: normal; font-size: 14px;">← Back to Home</a></p>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:5000/api';
+
+    function togglePassword() {
+        const input = document.getElementById('signupPassword');
+        const button = document.querySelector('.password-toggle');
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            button.textContent = '👁️';
+        }
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        try {
+            const response = await fetch(`${API_URL}/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message || 'Registration completed successfully! Please login to continue.');
+                window.location.href = '/login';
+            } else {
+                alert(data.message || 'Error occurred during signup.');
+            }
+        } catch (err) {
+            console.error('Signup error:', err);
+            alert('Could not connect to the authentication server.');
+        }
+    });
+</script>
+</body>
+</html>
